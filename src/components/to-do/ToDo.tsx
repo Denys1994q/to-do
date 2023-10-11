@@ -9,6 +9,8 @@ import EditTaskModal from "../modals/edit-task-modal/Edit-task-modal";
 import { Task } from "../../store/slices/to-do";
 import { toDo_addTask, toDo_removeTask, toDo_editTask, toDo_filterTasks } from "../../store/slices/to-do";
 import Select from "../inputs/select/Select";
+import ConfirmModal from "../modals/confirm-modal/Confirm-modal";
+import { v4 as uuidv4 } from "uuid";
 
 const ActionsBtnsWrapper: any = styled.div`
     font-size: 1.8rem;
@@ -36,7 +38,7 @@ const ListItem = styled.div`
 const ItemMain = styled.div`
     width: 70%;
 `;
-const ItemStatus = styled.p``;
+const ItemStatus = styled.div``;
 const ItemHeading = styled.h2`
     font-size: 2.2rem;
     margin-bottom: 1rem;
@@ -64,6 +66,8 @@ const ToDo = () => {
         status: 0,
     });
     const [activeFilter, setActiveFilter] = useState("all");
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [idToDel, setIdToDel] = useState("");
 
     useEffect(() => {
         dispatch(toDo_filterTasks(activeFilter));
@@ -72,6 +76,9 @@ const ToDo = () => {
     const buttonStyle = {
         fontSize: "1.8rem",
     };
+    const iconButtonStyle = {
+        fontSize: '3rem'
+    }
     const listItemStyle = {
         padding: "1rem",
     };
@@ -97,7 +104,12 @@ const ToDo = () => {
     const handleEditModalClose = () => setShowEditModal(false);
 
     const removeTask = (id: string) => {
-        dispatch(toDo_removeTask(id));
+        setIdToDel(id);
+        setShowConfirmModal(true);
+    };
+    const confirmDeleting = () => {
+        dispatch(toDo_removeTask(idToDel));
+        setShowConfirmModal(false);
     };
 
     const handleSaveTask = (task: Task) => {
@@ -117,40 +129,49 @@ const ToDo = () => {
     return (
         <>
             <Header>
-                <H1 text='To Do List' />
-                <Button variant='dark' style={buttonStyle} onClick={handleShow}>
-                    Додати завдання
+                <H1 text='To Do List' withBadge withBadgeValue={filteredTasks.length} />
+                <Button variant='outline-dark' style={buttonStyle} onClick={handleShow}>
+                    <span>Додати завдання</span>
                 </Button>
             </Header>
             <FilterPanel>
                 <Select handleChange={handleChange} activeFilter={activeFilter} />
             </FilterPanel>
-
             {filteredTasks.length > 0 ? (
                 <ListGroup variant='flush' style={{ maxHeight: "40rem", overflowY: "auto" }}>
                     {filteredTasks.map((item: any) => {
                         return (
-                            <ListGroup.Item style={listItemStyle} variant='light' action>
+                            <ListGroup.Item key={uuidv4()} style={listItemStyle} variant='light' action>
                                 <ListItem>
                                     <ItemMain>
                                         <ItemHeading>{item.title}</ItemHeading>
                                         <p>{item.description}</p>
                                     </ItemMain>
                                     <ActionsBtnsWrapper>
-                                        <EditButton variant='dark' onClick={() => handleEditModalShow(item)}>
+                                        <EditButton
+                                            as='span'
+                                            variant='dark'
+                                            style={iconButtonStyle}
+                                            onClick={() => handleEditModalShow(item)}
+                                        >
                                             &#9998;
                                         </EditButton>
-                                        <DeleteButton variant='danger' onClick={() => removeTask(item.id)}>
+                                        <DeleteButton
+                                            as='span'
+                                            variant='danger'
+                                            style={iconButtonStyle}
+                                            onClick={() => removeTask(item.id)}
+                                        >
                                             &#128465;
                                         </DeleteButton>
                                     </ActionsBtnsWrapper>
                                     <ItemStatus>
                                         {item.status === 1 ? (
-                                            <Button variant='success' style={buttonStyle}>
+                                            <Button as='span' variant='success' style={buttonStyle}>
                                                 &#10004;
                                             </Button>
                                         ) : (
-                                            <Button variant='danger' style={buttonStyle}>
+                                            <Button as='span' variant='danger' style={buttonStyle}>
                                                 &#10008;
                                             </Button>
                                         )}
@@ -161,15 +182,21 @@ const ToDo = () => {
                     })}
                 </ListGroup>
             ) : (
-                <ItemHeading>Немає доданих завдань</ItemHeading>
+                <ItemHeading>Немає завдань</ItemHeading>
             )}
-
             <AddTaskModal show={show} handleClose={handleClose} handleAddTask={handleAddTask} />
             <EditTaskModal
                 show={showEditModal}
                 handleClose={handleEditModalClose}
                 editTaskData={editTaskData}
                 handleSaveTask={handleSaveTask}
+            />
+            <ConfirmModal
+                show={showConfirmModal}
+                title={"Видалити"}
+                text={"Підтвердіть видалення завдання"}
+                onConfirm={confirmDeleting}
+                handleClose={() => setShowConfirmModal(false)}
             />
         </>
     );

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
 
 export interface Task {
     id: string,
@@ -8,21 +7,10 @@ export interface Task {
     status: number
 }
 
+const savedTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
 const initialState = {
-    tasks: [
-        {
-            id: uuidv4(),
-            title: "Зробити справу 1",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, quisquam temporibus.",
-            status: 1,
-        },
-        {
-            id: uuidv4(),
-            title: "Зробити справу 2",
-            description: "Lorem ipsum dolor sit",
-            status: 0,
-        },
-    ] as Task[],
+    tasks: savedTasks as Task[],
     filteredTasks: [] as Task[]
 };
 
@@ -32,15 +20,18 @@ const ToDoSlice = createSlice({
     reducers: {
         toDo_addTask: (state, action) => {
             state.tasks.push(action.payload as Task);
+            localStorage.setItem("tasks", JSON.stringify(state.tasks));
         },
         toDo_removeTask: (state, action) => {
             state.tasks = state.tasks.filter((task: Task) =>  task.id !== action.payload);
+            localStorage.setItem("tasks", JSON.stringify(state.tasks));
         },
         toDo_editTask: (state, action) => {
             const editedTask = action.payload as Task;
             const taskIndex = state.tasks.findIndex((task) => task.id === editedTask.id);
             if (taskIndex !== -1) {
                 state.tasks[taskIndex] = editedTask;
+                localStorage.setItem("tasks", JSON.stringify(state.tasks));
             }
         },
         toDo_filterTasks: (state, action) => {

@@ -43,7 +43,7 @@ const AddTaskModal = ({ show, handleClose, handleAddTask }: any): JSX.Element =>
     };
 
     return (
-        <CustomModal show={show} onHide={handleClose} animation={false} centered enforceFocus={false}>
+        <CustomModal show={show} onHide={handleClose} animation={false} centered>
             <CustomModal.Header closeButton>
                 <CustomModal.Title>Нове завдання</CustomModal.Title>
             </CustomModal.Header>
