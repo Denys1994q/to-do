@@ -3,19 +3,20 @@ import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { styled } from "styled-components";
 
+const CustomModal = styled(Modal)`
+.modal-title {
+    font-size: 24px;
+}
+.modal-body,
+.modal-footer {
+    font-size: 18px;
+}
+`;
+const CustomButton: any = styled(Button)`
+font-size: 18px;
+`;
+
 const EditTaskModal = ({ show, handleClose }: any): JSX.Element => {
-    const CustomModal = styled(Modal)`
-        .modal-title {
-            font-size: 24px;
-        }
-        .modal-body,
-        .modal-footer {
-            font-size: 18px;
-        }
-    `;
-    const CustomButton: any = styled(Button)`
-        font-size: 18px;
-    `;
 
     return (
         <CustomModal show={show} onHide={handleClose} animation={false} centered>

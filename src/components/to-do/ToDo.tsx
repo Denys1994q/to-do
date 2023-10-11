@@ -1,72 +1,71 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import H1 from "../headings/h1/H1";
 import { styled } from "styled-components";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import AddTaskModal from "../modals/add-task-modal/Add-task-modal";
 import EditTaskModal from "../modals/edit-task-modal/Edit-task-modal";
+import { Task } from "../../store/slices/to-do";
+import { toDo_addTask } from "../../store/slices/to-do";
+
+const ActionsBtnsWrapper: any = styled.div`
+    font-size: 1.8rem;
+    visibility: hidden;
+    display: flex;
+    gap: 1rem;
+`;
+const EditButton: any = styled(Button)`
+    font-size: 1.8rem;
+`;
+const DeleteButton: any = styled(Button)`
+    font-size: 1.8rem;
+`;
+const ListItem = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &:not(:last-child) {
+        margin-bottom: 2rem;
+    }
+    &:hover ${ActionsBtnsWrapper} {
+        visibility: visible;
+    }
+`;
+const ItemMain = styled.div`
+    width: 70%;
+`;
+const ItemStatus = styled.p``;
+const ItemHeading = styled.h2`
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+`;
+const Header = styled.header`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+const buttonStyle = {
+    fontSize: "1.8rem",
+};
+const listItemStyle = {
+    padding: "1rem",
+};
 
 const ToDo = () => {
+    const dispatch = useDispatch();
+    const tasks = useSelector((state: any) => state.ToDoSlice.tasks);
     const [show, setShow] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
 
-    const ActionsBtnsWrapper: any = styled.div`
-        font-size: 1.8rem;
-        visibility: hidden;
-        display: flex;
-        gap: 1rem;
-    `;
-    const EditButton: any = styled(Button)`
-        font-size: 1.8rem;
-    `;
-    const DeleteButton: any = styled(Button)`
-        font-size: 1.8rem;
-    `;
-    const ListItem = styled.div`
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        &:not(:last-child) {
-            margin-bottom: 2rem;
-        }
-        &:hover ${ActionsBtnsWrapper} {
-            visibility: visible;
-        }
-    `;
-    const ItemMain = styled.div`
-        width: 70%;
-    `;
-    const ItemStatus = styled.p``;
-    const ItemHeading = styled.h2`
-        font-size: 2.2rem;
-    `;
-    const Header = styled.header`
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    `;
-    const buttonStyle = {
-        fontSize: "1.8rem",
-    };
-    const listItemStyle = {
-        padding: "1rem",
-    };
-
-    const data = [
-        {
-            title: "Зробити справу 1",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, quisquam temporibus.",
-            status: 1,
-        },
-        {
-            title: "Зробити справу 2",
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, quisquam temporibus.",
-            status: 0,
-        },
-    ];
-
     const handleShow = () => setShow(true);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+    };
+    const handleAddTask = (task: Task) => {
+        setShow(false);
+        dispatch(toDo_addTask(task));
+    };
 
     const handleEditModalShow = () => setShowEditModal(true);
     const handleEditModalClose = () => setShowEditModal(false);
@@ -80,7 +79,7 @@ const ToDo = () => {
                 </Button>
             </Header>
             <ListGroup variant='flush'>
-                {data.map(item => {
+                {tasks.map((item: any) => {
                     return (
                         <ListGroup.Item style={listItemStyle} variant='light' action>
                             <ListItem>
@@ -110,7 +109,7 @@ const ToDo = () => {
                     );
                 })}
             </ListGroup>
-            <AddTaskModal show={show} handleClose={handleClose} />
+            <AddTaskModal show={show} handleClose={handleClose} handleAddTask={handleAddTask} />
             <EditTaskModal show={showEditModal} handleClose={handleEditModalClose} />
         </>
     );
