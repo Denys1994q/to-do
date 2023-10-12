@@ -101,9 +101,7 @@ const ToDo = (): JSX.Element => {
     }, [tasks]);
 
     const handleShow = () => setShow(true);
-    const handleClose = () => {
-        setShow(false);
-    };
+    const handleClose = () => setShow(false);
     const handleAddTask = (task: Task) => {
         dispatch(toDo_addTask(task));
         setActiveFilter("all");
@@ -174,7 +172,7 @@ const ToDo = (): JSX.Element => {
                                         <Button
                                             as='span'
                                             variant='dark'
-                                            style={{ fontSize: "18px" }}
+                                            style={{ fontSize: "1.8rem" }}
                                             onClick={() => handleEditModalShow(item)}
                                         >
                                             &#9998;
@@ -182,7 +180,7 @@ const ToDo = (): JSX.Element => {
                                         <Button
                                             as='span'
                                             variant='danger'
-                                            style={{ fontSize: "18px" }}
+                                            style={{ fontSize: "1.8rem" }}
                                             onClick={() => removeTask(item.id)}
                                         >
                                             &#128465;

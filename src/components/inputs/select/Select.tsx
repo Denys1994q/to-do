@@ -28,7 +28,7 @@ const Select = ({ handleChange, activeFilter, options }: SelectProps): JSX.Eleme
             aria-label='Default select example'
             value={filter}
             onChange={e => onChange(e.target.value)}
-            style={{ fontSize: "16px" }}
+            style={{ fontSize: "1.6rem" }}
         >
             {options.map(option => (
                 <option key={option.value} value={option.value}>

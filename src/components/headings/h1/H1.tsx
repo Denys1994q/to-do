@@ -19,7 +19,7 @@ const H1 = ({ text, withBadge, withBadgeValue }: H1Props): JSX.Element => {
             <Title>
                 {text}
                 {withBadge && (
-                    <Badge bg='warning' style={{ fontSize: "12px" }} pill>
+                    <Badge bg='warning' style={{ fontSize: "1.2rem" }} pill>
                         {withBadgeValue}
                     </Badge>
                 )}
