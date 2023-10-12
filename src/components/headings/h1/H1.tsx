@@ -9,7 +9,6 @@ interface H1Props {
 
 const H1 = ({ text, withBadge, withBadgeValue }: H1Props): JSX.Element => {
     const Title = styled.h1`
-        margin-bottom: 3rem;
         display: flex;
         justify-content: center;
         align-items: center;

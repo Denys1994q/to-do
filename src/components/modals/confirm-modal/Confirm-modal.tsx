@@ -4,23 +4,23 @@ import Button from "react-bootstrap/Button";
 
 const CustomModal = styled(Modal)`
     .modal-title {
-        font-size: 24px;
+        font-size: 2.4rem;
     }
     .modal-body,
     .modal-footer {
-        font-size: 18px;
+        font-size: 1.8rem;
     }
 `;
 const CustomButton: any = styled(Button)`
-    font-size: 16px;
+    font-size: 1.6rem;
 `;
 
 interface ConfirmModalProps {
     show: boolean;
     title: string;
     text: string;
-    onConfirm: any;
-    handleClose: any;
+    onConfirm?: () => void;
+    handleClose: () => void;
 }
 
 const ConfirmModal = ({ show, title, text, handleClose, onConfirm }: ConfirmModalProps): JSX.Element => {

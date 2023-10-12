@@ -1,17 +1,27 @@
 import { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 
-const Select = ({handleChange, activeFilter}: any): JSX.Element => {
-    const [filter, setFilter] = useState("all");
+interface SelectProps {
+    handleChange?: (filter: string) => void;
+    activeFilter?: string;
+    options: { value: string; label: string }[];
+}
+
+const Select = ({ handleChange, activeFilter, options }: SelectProps): JSX.Element => {
+    const [filter, setFilter] = useState("");
 
     const onChange = (e: any) => {
-        setFilter(e)
-        handleChange(e)
-    }
+        setFilter(e);
+        if (handleChange) {
+            handleChange(e);
+        }
+    };
 
     useEffect(() => {
-        setFilter(activeFilter)
-    }, [activeFilter])
+        if (activeFilter) {
+            setFilter(activeFilter);
+        }
+    }, [activeFilter]);
 
     return (
         <Form.Select
@@ -20,9 +30,11 @@ const Select = ({handleChange, activeFilter}: any): JSX.Element => {
             onChange={e => onChange(e.target.value)}
             style={{ fontSize: "16px" }}
         >
-            <option value='all'>Всі завдання</option>
-            <option value='1'>Виконані</option>
-            <option value='0'>Не виконані</option>
+            {options.map(option => (
+                <option key={option.value} value={option.value}>
+                    {option.label}
+                </option>
+            ))}
         </Form.Select>
     );
 };

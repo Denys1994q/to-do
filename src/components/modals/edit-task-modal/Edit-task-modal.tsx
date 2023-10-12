@@ -7,20 +7,27 @@ import { Task } from "../../../store/slices/to-do";
 
 const CustomModal = styled(Modal)`
     .modal-title {
-        font-size: 24px;
+        font-size: 2.4rem;
     }
     .modal-body,
     .modal-footer {
-        font-size: 18px;
+        font-size: 1.8rem;
     }
 `;
 const CustomButton: any = styled(Button)`
-    font-size: 18px;
+    font-size: 1.8rem;
     display: block;
     margin-left: auto;
 `;
 
-const EditTaskModal = ({ show, handleClose, editTaskData, handleSaveTask }: any): JSX.Element => {
+interface EditTaskModalProps {
+    show: boolean;
+    handleClose: () => void;
+    editTaskData: Task;
+    handleSaveTask: (task: Task) => void;
+}
+
+const EditTaskModal = ({ show, handleClose, editTaskData, handleSaveTask }: EditTaskModalProps): JSX.Element => {
     const [titleValue, setTitleValue] = useState("");
     const [descValue, setDescValue] = useState("");
     const [statusValue, setStatusValue] = useState(0);

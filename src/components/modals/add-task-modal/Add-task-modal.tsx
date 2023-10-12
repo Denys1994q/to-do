@@ -4,23 +4,30 @@ import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { styled } from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { Task } from "../../../store/slices/to-do";
 
 const CustomModal = styled(Modal)`
     .modal-title {
-        font-size: 24px;
+        font-size: 2.4rem;
     }
     .modal-body,
     .modal-footer {
-        font-size: 18px;
+        font-size: 1.8rem;
     }
 `;
 const AddButton: any = styled(Button)`
-    font-size: 18px;
+    font-size: 1.8rem;
     display: block;
     margin-left: auto;
 `;
 
-const AddTaskModal = ({ show, handleClose, handleAddTask }: any): JSX.Element => {
+interface AddTaskModalProps {
+    show: boolean;
+    handleClose: () => void;
+    handleAddTask: (task: Task) => void;
+}
+
+const AddTaskModal = ({ show, handleClose, handleAddTask }: AddTaskModalProps): JSX.Element => {
     const [titleValue, setTitleValue] = useState("");
     const [descValue, setDescValue] = useState("");
     const [statusValue, setStatusValue] = useState(0);
